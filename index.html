@@ -953,6 +953,48 @@ i svg{width:100%;height:100%;display:block;stroke-width:2}
   box-shadow:0 0 0 1px rgba(255,220,170,.4) inset,0 6px 22px rgba(255,122,61,.45),0 0 30px rgba(255,169,77,.3)}
 .iSkip{margin-top:16px;font-size:12.5px;color:var(--warm-40);background:none;border:none;cursor:pointer}
 
+/* -- onboarding -- */
+#iOnb1,#iOnb2,#iOnb3{padding:0 28px;text-align:center;align-items:center;justify-content:flex-start}
+.iphase#iOnb1,.iphase#iOnb2,.iphase#iOnb3{justify-content:space-between}
+.onbTop{width:100%;display:flex;justify-content:flex-end;padding-top:16px}
+.onbSkip{background:none;border:none;color:var(--warm-40);font-size:13px;cursor:pointer}
+.onbVisual{width:100%;flex:1;display:flex;align-items:center;justify-content:center;position:relative;min-height:220px}
+
+/* screen 1 — problem collage */
+.collage{position:relative;width:240px;height:220px}
+.cimg{position:absolute;width:118px;height:150px;border-radius:16px;object-fit:cover;background-size:cover;background-position:center;
+  border:3px solid var(--warm-white);box-shadow:0 14px 30px rgba(0,0,0,.5)}
+.cimg.c1{left:0;top:10px;transform:rotate(-7deg);z-index:1}
+.cimg.c2{right:0;top:0;transform:rotate(6deg);z-index:2}
+.cimg.c3{left:46px;bottom:0;transform:rotate(-2deg);z-index:3;box-shadow:0 14px 30px rgba(0,0,0,.5),0 0 30px rgba(255,169,77,.35)}
+
+/* screen 2 — people graph */
+.pgraph{position:relative;width:270px;height:230px}
+.pnode{position:absolute;width:64px;height:64px;border-radius:50%;background-size:cover;background-position:center;
+  box-shadow:0 0 0 3px var(--night),0 0 0 5px var(--glow),0 0 22px 4px rgba(255,169,77,.5)}
+.pnode.dim{box-shadow:0 0 0 3px var(--night),0 0 0 4px rgba(154,106,63,.65)}
+.pnode.me{width:76px;height:76px;left:50%;top:50%;transform:translate(-50%,-50%);z-index:3;
+  box-shadow:0 0 0 3px var(--night),0 0 0 6px var(--flame),0 0 34px 8px rgba(255,231,176,.6)}
+.plink{position:absolute;left:50%;top:50%;height:2px;background:linear-gradient(90deg,rgba(255,169,77,.55),rgba(255,169,77,0));
+  transform-origin:0 50%}
+
+/* screen 3 — payoff pin */
+.bigpin{position:relative;width:150px;height:190px;filter:drop-shadow(0 0 30px rgba(255,231,176,.6)) drop-shadow(0 16px 26px rgba(0,0,0,.55))}
+.bigpin .dropring{position:absolute;inset:0;clip-path:url(#dropClip);background:var(--flame)}
+.bigpin .dropimg{position:absolute;inset:6px;clip-path:url(#dropClip);background-size:cover;background-position:center}
+.bigpin .tagtxt{position:absolute;left:50%;bottom:-30px;transform:translateX(-50%);white-space:nowrap;font-size:12px;font-weight:700;
+  color:var(--warm-white);background:rgba(20,17,13,.82);border:1px solid var(--hairline);padding:5px 12px;border-radius:100px}
+
+.onbCopy{width:100%;padding:8px 0 6px}
+.onbCopy h1{font-family:"Archivo Black";font-size:26px;line-height:1.14;letter-spacing:-.01em}
+.onbCopy h1 span{color:var(--glow)}
+.onbCopy p{margin-top:12px;color:var(--warm-60);font-size:14.5px;line-height:1.55;max-width:32ch;margin-left:auto;margin-right:auto}
+
+.onbBottom{width:100%;padding:18px 0 26px}
+.onbDots{display:flex;justify-content:center;gap:7px;margin-bottom:20px}
+.onbDots span{width:6px;height:6px;border-radius:50%;background:var(--hairline)}
+.onbDots span.on{background:var(--glow);box-shadow:0 0 8px rgba(255,169,77,.7);width:20px;border-radius:100px}
+
 /* -- signin -- */
 #iSignin{padding:26px 26px 30px;justify-content:flex-end}
 .stamp{align-self:flex-start;font-family:"Permanent Marker";font-size:13px;color:var(--glow);
@@ -1029,6 +1071,69 @@ i svg{width:100%;height:100%;display:block;stroke-width:2}
       <p class="sub">2 years in the mission, knows every warm spot. she picked you for the next drop.</p>
       <button class="iBtn" id="acceptInvite">accept the invite</button>
       <button class="iSkip" id="skipInvite">not maya? get your own invite →</button>
+    </div>
+
+    <div class="iphase" id="iOnb1">
+      <div class="onbTop"><button class="onbSkip" data-skip="1">skip</button></div>
+      <div class="onbVisual">
+        <div class="collage">
+          <div class="cimg c1" data-slug="festival"></div>
+          <div class="cimg c2" data-slug="club"></div>
+          <div class="cimg c3" data-slug="rooftop"></div>
+        </div>
+      </div>
+      <div class="onbCopy">
+        <h1>new to sf?<br>the city's about to<br>get <span>smaller.</span></h1>
+        <p>no friend group, no local taste, google gives you tourist traps. we fix the first part.</p>
+      </div>
+      <div class="onbBottom">
+        <div class="onbDots"><span class="on"></span><span></span><span></span></div>
+        <button class="iBtn" data-next="iOnb2">next</button>
+      </div>
+    </div>
+
+    <div class="iphase" id="iOnb2">
+      <div class="onbTop"><button class="onbSkip" data-skip="1">skip</button></div>
+      <div class="onbVisual">
+        <div class="pgraph">
+          <div class="plink" style="width:78px;top:26%;left:44%;transform:rotate(200deg)"></div>
+          <div class="plink" style="width:82px;top:70%;left:46%;transform:rotate(150deg)"></div>
+          <div class="plink" style="width:75px;top:30%;left:50%;transform:rotate(-25deg)"></div>
+          <div class="plink" style="width:80px;top:66%;left:50%;transform:rotate(20deg)"></div>
+          <div class="pnode" style="left:8%;top:12%" data-slug="maya"></div>
+          <div class="pnode dim" style="left:70%;top:6%" data-slug="noa"></div>
+          <div class="pnode dim" style="left:2%;top:64%" data-slug="theo"></div>
+          <div class="pnode" style="left:74%;top:66%" data-slug="dev"></div>
+          <div class="pnode me" data-slug="ren"></div>
+        </div>
+      </div>
+      <div class="onbCopy">
+        <h1>find your<br><span>people</span> first.</h1>
+        <p>matched with locals and tastemakers who already live your kind of night — not an algorithm, an actual person.</p>
+      </div>
+      <div class="onbBottom">
+        <div class="onbDots"><span></span><span class="on"></span><span></span></div>
+        <button class="iBtn" data-next="iOnb3">next</button>
+      </div>
+    </div>
+
+    <div class="iphase" id="iOnb3">
+      <div class="onbTop"><button class="onbSkip" data-skip="1">skip</button></div>
+      <div class="onbVisual">
+        <div class="bigpin">
+          <div class="dropring"></div>
+          <div class="dropimg" data-slug="elrio"></div>
+          <div class="tagtxt">● maya · el rio · tonight</div>
+        </div>
+      </div>
+      <div class="onbCopy">
+        <h1>their places<br>become <span>yours.</span></h1>
+        <p>every drop is a real place, from a real person, right now — you just have to show up.</p>
+      </div>
+      <div class="onbBottom">
+        <div class="onbDots"><span></span><span></span><span class="on"></span></div>
+        <button class="iBtn" data-next="iSignin">let's find my people</button>
+      </div>
     </div>
 
     <div class="iphase" id="iSignin">
@@ -1149,15 +1254,24 @@ const _ICONS = (typeof ICONS!=="undefined")?ICONS:{};
 /* ----- intro flow ----- */
 function initIntro(){
   document.querySelectorAll('#introRoot img[data-slug]').forEach(el=>{ el.src = img(el.dataset.slug); });
-  document.querySelectorAll('#introRoot .dropimg[data-slug]').forEach(el=>{ el.style.backgroundImage = `url('${img(el.dataset.slug)}')`; });
+  document.querySelectorAll('#introRoot .dropimg[data-slug], #introRoot .cimg[data-slug], #introRoot .pnode[data-slug]').forEach(el=>{
+    el.style.backgroundImage = `url('${img(el.dataset.slug)}')`;
+  });
   const av = document.getElementById('invAv'); if(av) av.style.backgroundImage = `url('${img("maya")}')`;
   renderIcons(document.getElementById('introRoot'));
 
   const go = phase => document.querySelectorAll('.iphase').forEach(p=>p.classList.toggle('on', p.id===phase));
   setTimeout(()=>go('iInvite'), 2600);
 
-  document.getElementById('acceptInvite').addEventListener('click', ()=>go('iSignin'));
+  document.getElementById('acceptInvite').addEventListener('click', ()=>go('iOnb1'));
   document.getElementById('skipInvite').addEventListener('click', ()=>go('iSignin'));
+
+  document.querySelectorAll('#introRoot [data-next]').forEach(b=>{
+    b.addEventListener('click', ()=> go(b.dataset.next));
+  });
+  document.querySelectorAll('#introRoot [data-skip]').forEach(b=>{
+    b.addEventListener('click', ()=> go('iSignin'));
+  });
 
   document.querySelectorAll('#iSignin [data-auth]').forEach(b=>{
     b.addEventListener('click', ()=>{

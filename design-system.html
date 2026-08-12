@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DropIn — Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* --- warm dark bases (the city at night) --- */
+    --night:      #14110D;   /* base — warm espresso black, never cold */
+    --night-2:    #1E1913;   /* raised surface / cards */
+    --night-3:    #2A2118;   /* hover / borders */
+    --hairline:   rgba(255,214,150,.12);
+
+    /* --- one light, three heats (replaces green/orange/violet modes) --- */
+    --flame:      #FFE7B0;   /* LIVE  — hottest, near white-amber */
+    --ember:      #FF7A3D;   /* RECENT — burnt orange, the brand */
+    --coal:       #9A6A3F;   /* MEMORY — banked coals, dim warm */
+
+    /* --- brand light --- */
+    --glow:       #FFA94D;   /* the amber light source */
+
+    /* --- warm neutrals --- */
+    --bone:       #F3E9DA;   /* warm cream, light surfaces */
+    --warm-white: #FBF4E9;   /* text — warm, not pure white */
+    --warm-60:    rgba(251,244,233,.60);
+    --warm-40:    rgba(251,244,233,.40);
+    --ink:        #14110D;   /* text on light/on-accent */
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--night);
+    color:var(--warm-white);
+    font-family:"Space Grotesk",system-ui,sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  /* film grain — analog warmth, low opacity, blended */
+  body::before{
+    content:"";position:fixed;inset:0;z-index:9999;pointer-events:none;
+    opacity:.05;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  /* ambient warm bloom top-right, like a streetlight off-frame */
+  body::after{
+    content:"";position:fixed;top:-20%;right:-10%;width:60vw;height:60vw;z-index:0;pointer-events:none;
+    background:radial-gradient(circle, rgba(255,122,61,.16), rgba(255,122,61,0) 60%);
+  }
+
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px;position:relative;z-index:1}
+  section{padding:72px 0;border-top:1px solid var(--hairline)}
+  section:first-of-type{border-top:none}
+
+  /* eyebrow encodes the section number of a real sequence */
+  .eyebrow{
+    font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--warm-40);display:flex;align-items:center;gap:12px;margin-bottom:20px;
+  }
+  .eyebrow b{color:var(--ember);font-weight:700}
+  h2{font-family:"Archivo Black";font-size:clamp(26px,4vw,40px);line-height:1.02;letter-spacing:-.01em;margin-bottom:14px}
+  .lede{color:var(--warm-60);max-width:56ch;font-size:16px}
+
+  /* ---------- HERO ---------- */
+  .hero{padding:96px 0 84px;text-align:left}
+  .wordmark{
+    font-family:"Archivo Black";font-size:clamp(58px,12vw,132px);line-height:.9;letter-spacing:-.02em;
+    color:var(--warm-white);
+    text-shadow:
+      0 0 1px rgba(255,169,77,.9),
+      0 2px 0 #C9531F,
+      0 0 34px rgba(255,122,61,.55),
+      0 0 90px rgba(255,122,61,.30);
+  }
+  .wordmark .in{color:var(--ember)}
+  .pov{
+    font-family:"Archivo Black";font-size:clamp(20px,3.4vw,34px);line-height:1.15;letter-spacing:-.01em;
+    margin:34px 0 10px;max-width:20ch;
+  }
+  .pov .lit{color:var(--glow);text-shadow:0 0 26px rgba(255,169,77,.5)}
+  .hero p.sub{color:var(--warm-60);max-width:52ch;margin-top:14px}
+  .risk{
+    margin-top:34px;display:inline-flex;align-items:center;gap:10px;
+    font-size:13px;color:var(--warm-60);border:1px solid var(--hairline);
+    padding:9px 15px;border-radius:100px;
+  }
+  .risk i{width:15px;height:15px;color:var(--ember)}
+
+  /* ---------- PALETTE ---------- */
+  .swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;margin-top:26px}
+  .sw{border:1px solid var(--hairline);border-radius:14px;overflow:hidden;background:var(--night-2)}
+  .sw .chip{height:88px;display:block}
+  .sw .meta{padding:12px 14px}
+  .sw .nm{font-size:13px;font-weight:600}
+  .sw .hex{font-size:12px;color:var(--warm-40);letter-spacing:.02em}
+  .sw .use{font-size:11px;color:var(--warm-60);margin-top:5px;line-height:1.35}
+
+  /* ---------- LIGHT NOT COLOR ---------- */
+  .heatrow{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:26px}
+  .heat{background:var(--night-2);border:1px solid var(--hairline);border-radius:18px;padding:26px 22px;text-align:center}
+  .orb{width:74px;height:74px;border-radius:50%;margin:4px auto 20px}
+  .orb.live{background:radial-gradient(circle at 40% 35%,#fff,var(--flame) 55%,#F6B24E 100%);
+    box-shadow:0 0 0 6px rgba(255,231,176,.12),0 0 34px 6px rgba(255,231,176,.7),0 0 70px 12px rgba(255,169,77,.4)}
+  .orb.recent{background:radial-gradient(circle at 40% 35%,#FFC98A,var(--ember) 60%,#D8531F 100%);
+    box-shadow:0 0 0 6px rgba(255,122,61,.12),0 0 26px 3px rgba(255,122,61,.55)}
+  .orb.memory{background:radial-gradient(circle at 40% 35%,#B98B5C,var(--coal) 60%,#5E4126 100%);
+    box-shadow:0 0 16px 1px rgba(154,106,63,.35)}
+  .heat .badge{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+  .heat.live .badge{color:var(--flame)}
+  .heat.recent .badge{color:var(--ember)}
+  .heat.memory .badge{color:var(--coal)}
+  .heat .verb{font-size:13px;color:var(--warm-60);margin-top:8px}
+  .oldnew{margin-top:22px;display:flex;gap:22px;flex-wrap:wrap;align-items:center;font-size:13px;color:var(--warm-60)}
+  .oldnew .old{display:flex;gap:7px;align-items:center}
+  .dot{width:16px;height:16px;border-radius:50%;display:inline-block}
+  .strike{position:relative;opacity:.55}
+  .strike::after{content:"";position:absolute;left:-4px;right:-4px;top:50%;height:1px;background:var(--warm-40)}
+
+  /* ---------- TYPE ---------- */
+  .typewrap{margin-top:26px;display:grid;gap:20px}
+  .tcard{background:var(--night-2);border:1px solid var(--hairline);border-radius:16px;padding:24px 26px}
+  .tlabel{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--warm-40);margin-bottom:14px;display:flex;justify-content:space-between}
+  .t-disp{font-family:"Archivo Black";font-size:clamp(30px,5vw,52px);line-height:1;letter-spacing:-.015em}
+  .scale{display:flex;flex-wrap:wrap;gap:26px;align-items:baseline}
+  .scale span{color:var(--warm-white)}
+  .s-title{font-family:"Archivo Black";font-size:28px}
+  .s-head{font-weight:600;font-size:17px}
+  .s-body{font-weight:400;font-size:15px}
+  .s-cap{font-weight:500;font-size:12px;color:var(--warm-60)}
+  .voiceline{font-size:19px;font-weight:500;font-style:italic;color:var(--warm-white)}
+
+  /* ---------- ICONS ---------- */
+  .iconrow{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+  .ic{width:60px;height:60px;border-radius:14px;background:var(--night-2);border:1px solid var(--hairline);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--warm-white)}
+  .ic i{width:22px;height:22px}
+  .ic small{font-size:9px;color:var(--warm-40);letter-spacing:.02em}
+  .ic.amber{color:var(--ember)}
+
+  /* ---------- MAP + MARKERS ---------- */
+  .minimap{
+    margin-top:26px;position:relative;height:340px;border-radius:22px;overflow:hidden;
+    border:1px solid var(--hairline);
+    background:
+      radial-gradient(120% 90% at 70% 20%, rgba(255,122,61,.10), rgba(255,122,61,0) 55%),
+      linear-gradient(160deg,#191410,#0F0C08);
+  }
+  .streets{position:absolute;inset:0;opacity:.5}
+  .streets line{stroke:rgba(255,225,180,.06);stroke-width:1.4}
+  .streets .big{stroke:rgba(255,225,180,.10);stroke-width:2.4}
+  .pin{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;cursor:pointer}
+  .pin .dropface{
+    width:40px;height:40px;border-radius:50%;border:2px solid var(--warm-white);
+    background-size:cover;background-position:center;position:relative;
+    display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--ink)
+  }
+  .pin.live .dropface{box-shadow:0 0 0 4px rgba(255,231,176,.18),0 0 26px 5px rgba(255,231,176,.75)}
+  .pin.recent .dropface{box-shadow:0 0 0 4px rgba(255,122,61,.16),0 0 20px 3px rgba(255,122,61,.6)}
+  .pin.memory .dropface{box-shadow:0 0 12px 1px rgba(154,106,63,.4);opacity:.9}
+  .pin .tag{margin-top:7px;font-size:10px;font-weight:600;letter-spacing:.04em;background:rgba(20,17,13,.82);
+    padding:3px 8px;border-radius:100px;white-space:nowrap;border:1px solid var(--hairline)}
+  .pin.live .tag{color:var(--flame)}
+  .pin.recent .tag{color:var(--ember)}
+  .pin.memory .tag{color:var(--coal)}
+  .stack{position:absolute;top:-6px;right:-10px;background:var(--ember);color:var(--ink);
+    font-size:10px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid var(--night)}
+  .maplabel{position:absolute;left:18px;bottom:16px;font-size:12px;color:var(--warm-60);
+    background:rgba(20,17,13,.7);padding:7px 12px;border-radius:100px;border:1px solid var(--hairline)}
+
+  /* face gradients */
+  .g1{background:linear-gradient(135deg,#FFB27A,#E8623A)}
+  .g2{background:linear-gradient(135deg,#8FB3FF,#5C6CE8)}
+  .g3{background:linear-gradient(135deg,#F5C86B,#D8891F)}
+  .g4{background:linear-gradient(135deg,#C7A0FF,#7B54E8)}
+  .g5{background:linear-gradient(135deg,#9BE8B0,#3FA86A)}
+
+  /* ---------- PEOPLE GLOW ---------- */
+  .peoplerow{display:flex;gap:34px;flex-wrap:wrap;margin-top:26px}
+  .pcol{text-align:center}
+  .av{width:66px;height:66px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-weight:700;color:var(--ink);font-size:18px;margin:0 auto 12px}
+  .av.mine{box-shadow:0 0 0 3px var(--night),0 0 0 5px rgba(255,169,77,.9),0 0 22px 3px rgba(255,169,77,.6)}
+  .av.local{box-shadow:0 0 0 3px var(--night),0 0 0 4px rgba(154,106,63,.6)}
+  .pcol .cap{font-size:12px;color:var(--warm-60);max-width:15ch}
+  .pcol .who{font-size:13px;font-weight:600;color:var(--warm-white);margin-bottom:2px}
+
+  /* ---------- BUTTONS ---------- */
+  .btns{display:flex;gap:16px;flex-wrap:wrap;margin-top:26px;align-items:center}
+  .btn{font-family:"Space Grotesk";font-weight:600;font-size:15px;border:none;border-radius:100px;
+    padding:15px 30px;cursor:pointer;transition:transform .15s ease, box-shadow .25s ease}
+  .btn-commit{
+    color:var(--ink);
+    background:linear-gradient(180deg,#FFC078,var(--glow) 55%,#F0902F);
+    box-shadow:0 0 0 1px rgba(255,220,170,.4) inset,0 6px 22px rgba(255,122,61,.45),0 0 34px rgba(255,169,77,.35);
+  }
+  .btn-commit:hover{transform:translateY(-1px);box-shadow:0 0 0 1px rgba(255,220,170,.5) inset,0 8px 30px rgba(255,122,61,.6),0 0 52px rgba(255,169,77,.5)}
+  .btn-ghost{background:transparent;color:var(--warm-white);border:1px solid var(--hairline)}
+  .btn-ghost:hover{border-color:rgba(255,214,150,.3)}
+  .btnnote{font-size:12px;color:var(--warm-40);margin-top:14px}
+
+  /* ---------- SAMPLE CARD ---------- */
+  .cardgrid{margin-top:26px;display:grid;grid-template-columns:1fr;max-width:380px}
+  .dropcard{background:var(--night-2);border:1px solid var(--hairline);border-radius:22px;overflow:hidden}
+  .dropcard .hero-clip{height:200px;position:relative;
+    background:linear-gradient(160deg,#3A2A1E,#1C140E);display:flex;align-items:flex-end;padding:16px}
+  .dropcard .hero-clip::before{content:"";position:absolute;inset:0;
+    background:radial-gradient(90% 80% at 30% 20%,rgba(255,122,61,.25),transparent 60%)}
+  .dropcard .play{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;
+    background:rgba(20,17,13,.6);display:flex;align-items:center;justify-content:center;border:1px solid var(--hairline);z-index:2}
+  .dropcard .play i{width:15px;height:15px;color:var(--warm-white)}
+  .modebadge{position:relative;z-index:2;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+    padding:5px 10px;border-radius:100px;display:inline-flex;align-items:center;gap:6px}
+  .modebadge.live{color:var(--ink);background:var(--flame);box-shadow:0 0 20px rgba(255,231,176,.6)}
+  .modebadge.live .pulse{width:6px;height:6px;border-radius:50%;background:#C9531F;animation:pulse 1.4s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+  .dropcard .body{padding:18px 20px 20px}
+  .dropcard .place{font-family:"Archivo Black";font-size:19px;letter-spacing:-.01em}
+  .dropcard .hood{font-size:13px;color:var(--warm-60);margin:3px 0 14px}
+  .facepile{display:flex;align-items:center;margin-bottom:6px}
+  .facepile .mini{width:28px;height:28px;border-radius:50%;border:2px solid var(--night-2);margin-left:-9px;
+    display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--ink)}
+  .facepile .mini:first-child{margin-left:0}
+  .facepile .who{margin-left:11px;font-size:13px;color:var(--warm-white)}
+  .facepile .who b{color:var(--glow)}
+  .whyline{font-size:13px;color:var(--warm-60);font-style:italic;margin:12px 0 18px;line-height:1.45}
+  .dropcard .btn-commit{width:100%;display:flex;align-items:center;justify-content:center;gap:8px}
+  .dropcard .btn-commit i{width:16px;height:16px}
+
+  /* ---------- VOICE ---------- */
+  .voicegrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:26px}
+  .vcard{background:var(--night-2);border:1px solid var(--hairline);border-radius:16px;padding:20px 22px}
+  .vcard .ctx{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--warm-40);margin-bottom:10px}
+  .vcard .msg{font-size:16px;font-weight:500;color:var(--warm-white);line-height:1.4}
+  .vcard .msg .lit{color:var(--glow)}
+
+  /* ---------- DIFFERENTIATION ---------- */
+  .difftable{margin-top:26px;border:1px solid var(--hairline);border-radius:16px;overflow:hidden}
+  .diffrow{display:grid;grid-template-columns:130px 1fr;gap:16px;padding:16px 20px;border-top:1px solid var(--hairline);align-items:center}
+  .diffrow:first-child{border-top:none}
+  .diffrow .name{font-weight:700;font-size:14px}
+  .diffrow .name span{display:block;font-weight:400;font-size:11px;color:var(--warm-40);margin-top:2px}
+  .diffrow .vs{font-size:14px;color:var(--warm-60)}
+  .diffrow .vs b{color:var(--glow);font-weight:600}
+
+  footer{padding:56px 0 80px;color:var(--warm-40);font-size:13px;text-align:center;border-top:1px solid var(--hairline)}
+
+  @media (max-width:640px){
+    .heatrow{grid-template-columns:1fr}
+    .diffrow{grid-template-columns:1fr;gap:6px}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto}}
+  :focus-visible{outline:2px solid var(--glow);outline-offset:3px;border-radius:4px}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="wrap hero">
+  <div class="wordmark">Drop<span class="in">In</span></div>
+  <div class="pov">the warm glow of a city at night<br>when you've <span class="lit">found your people</span>.</div>
+  <p class="sub">A design language for the newcomer. Everyone else in this market is bright, airy, and ironic. DropIn is dusk: warm, human-lit, and earnest — the city stays dark until your people light it up.</p>
+  <div class="risk"><i data-lucide="flame"></i> The risk we're taking: going fully warm, dark, and grainy in a category of clean white maps.</div>
+</div>
+
+<!-- 01 PALETTE -->
+<section><div class="wrap">
+  <div class="eyebrow"><b>01</b> Palette</div>
+  <h2>Warm to the core</h2>
+  <p class="lede">The base is warm espresso, never cold black — that one shift keeps us out of the generic "dark app + neon accent" look and reads as a real place at night.</p>
+  <div class="swatches">
+    <div class="sw"><span class="chip" style="background:#14110D"></span><div class="meta"><div class="nm">Night</div><div class="hex">#14110D</div><div class="use">Base. The dark city.</div></div></div>
+    <div class="sw"><span class="chip" style="background:#1E1913"></span><div class="meta"><div class="nm">Night 2</div><div class="hex">#1E1913</div><div class="use">Cards, raised surfaces.</div></div></div>
+    <div class="sw"><span class="chip" style="background:#FFA94D"></span><div class="meta"><div class="nm">Glow</div><div class="hex">#FFA94D</div><div class="use">The light source. Commit.</div></div></div>
+    <div class="sw"><span class="chip" style="background:#FF7A3D"></span><div class="meta"><div class="nm">Ember</div><div class="hex">#FF7A3D</div><div class="use">Brand + Recent heat.</div></div></div>
+    <div class="sw"><span class="chip" style="background:#F3E9DA"></span><div class="meta"><div class="nm">Bone</div><div class="hex">#F3E9DA</div><div class="use">Warm light surfaces.</div></div></div>
+    <div class="sw"><span class="chip" style="background:#FBF4E9"></span><div class="meta"><div class="nm">Warm White</div><div class="hex">#FBF4E9</div><div class="use">Text. Never pure white.</div></div></div>
+  </div>
+</div></section>
+
+<!-- 02 LIGHT NOT COLOR -->
+<section><div class="wrap">
+  <div class="eyebrow"><b>02</b> Light, not color</div>
+  <h2>One light, three heats</h2>
+  <p class="lede">The old three-color mode system (green / orange / violet) got called "overused." So we killed it. A Drop's mode isn't a different hue — it's the same warm light at a different temperature. Hotter means more alive.</p>
+  <div class="heatrow">
+    <div class="heat live"><div class="orb live"></div><div class="badge">Live</div><div class="verb">here now — come</div></div>
+    <div class="heat recent"><div class="orb recent"></div><div class="badge">Recent</div><div class="verb">great tonight — go</div></div>
+    <div class="heat memory"><div class="orb memory"></div><div class="badge">Memory</div><div class="verb">great last time — shall we</div></div>
+  </div>
+  <div class="oldnew">
+    <div class="old strike"><span class="dot" style="background:#D4FF3F"></span><span class="dot" style="background:#FF7A3D"></span><span class="dot" style="background:#B9A6FF"></span> three unrelated hues</div>
+    <span style="color:var(--glow)">→</span>
+    <div class="old"><span class="dot" style="background:var(--flame)"></span><span class="dot" style="background:var(--ember)"></span><span class="dot" style="background:var(--coal)"></span> one family, heat carries meaning</div>
+  </div>
+</div></section>
+
+<!-- 03 TYPE -->
+<section><div class="wrap">
+  <div class="eyebrow"><b>03</b> Typography</div>
+  <h2>Loud display, calm voice</h2>
+  <p class="lede">Archivo Black carries the wordmark and the big warm moments. Space Grotesk does the quiet work. Emotional lines lean into italic — that's where DropIn lets itself be sincere.</p>
+  <div class="typewrap">
+    <div class="tcard">
+      <div class="tlabel"><span>Display — Archivo Black</span><span>headlines · wordmark</span></div>
+      <div class="t-disp">your people are out.</div>
+    </div>
+    <div class="tcard">
+      <div class="tlabel"><span>UI — Space Grotesk</span><span>scale</span></div>
+      <div class="scale">
+        <span class="s-title">Title 28</span>
+        <span class="s-head">Header 17</span>
+        <span class="s-body">Body 15</span>
+        <span class="s-cap">Caption 12</span>
+      </div>
+    </div>
+    <div class="tcard">
+      <div class="tlabel"><span>Voice — italic, earnest</span><span>the sincere register</span></div>
+      <div class="voiceline">"new here? the city's about to get a lot smaller."</div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 04 ICONS -->
+<section><div class="wrap">
+  <div class="eyebrow"><b>04</b> Iconography</div>
+  <h2>Imported, not drawn</h2>
+  <p class="lede">Icons come from Lucide via CDN — one consistent, modern set, zero hand-drawn SVGs to maintain. Stroke weight stays even so nothing competes with the glow.</p>
+  <div class="iconrow">
+    <div class="ic amber"><i data-lucide="map"></i><small>map</small></div>
+    <div class="ic"><i data-lucide="users"></i><small>people</small></div>
+    <div class="ic amber"><i data-lucide="plus"></i><small>create</small></div>
+    <div class="ic"><i data-lucide="message-circle"></i><small>inbox</small></div>
+    <div class="ic"><i data-lucide="user"></i><small>profile</small></div>
+    <div class="ic"><i data-lucide="navigation"></i><small>get there</small></div>
+    <div class="ic"><i data-lucide="flame"></i><small>live</small></div>
+    <div class="ic"><i data-lucide="heart"></i><small>react</small></div>
+    <div class="ic"><i data-lucide="calendar"></i><small>event</small></div>
+    <div class="ic"><i data-lucide="ticket"></i><small>go</small></div>
+  </div>
+</div></section>
+
+<!-- 05 MAP + MARKERS -->
+<section><div class="wrap">
+  <div class="eyebrow"><b>05</b> The night map</div>
+  <h2>The city lights up where your people are</h2>
+  <p class="lede">Custom warm-styled map, not the cool default that felt "built for millennials." No photo circles — those confused testers. Just warm glowing pins carrying one small face; the glow's intensity is the heat.</p>
+  <div class="minimap">
+    <svg class="streets" viewBox="0 0 800 340" preserveAspectRatio="none">
+      <line class="big" x1="0" y1="120" x2="800" y2="90"></line>
+      <line class="big" x1="0" y1="240" x2="800" y2="270"></line>
+      <line x1="0" y1="60" x2="800" y2="40"></line>
+      <line x1="0" y1="180" x2="800" y2="180"></line>
+      <line class="big" x1="180" y1="0" x2="220" y2="340"></line>
+      <line x1="420" y1="0" x2="440" y2="340"></line>
+      <line class="big" x1="600" y1="0" x2="580" y2="340"></line>
+      <line x1="320" y1="0" x2="330" y2="340"></line>
+    </svg>
+    <div class="pin live" style="left:31%;top:38%">
+      <div class="dropface g1">M</div>
+      <div class="tag">Live · 2 here</div>
+    </div>
+    <div class="pin recent" style="left:63%;top:30%">
+      <div class="dropface g3">J<span class="stack">3</span></div>
+      <div class="tag">Recent · 1h ago</div>
+    </div>
+    <div class="pin memory" style="left:48%;top:66%">
+      <div class="dropface g4">L</div>
+      <div class="tag">Memory</div>
+    </div>
+    <div class="pin recent" style="left:78%;top:60%">
+      <div class="dropface g5">A</div>
+      <div class="tag">Recent</div>
+    </div>
+    <div class="maplabel">3 of your people are out in the Mission tonight</div>
+  </div>
+</div></section>
+
+<!-- 06 PEOPLE GLOW -->
+<section><div class="wrap">
+  <div class="eyebrow"><b>06</b> Your people glow</div>
+  <h2>The trust graph, made visible</h2>
+  <p class="lede">Everyone else shows faces flat in a grid. Ours are lit by closeness — your people carry a bright amber ring, locals and taste-matches a dim one. You can see who to trust before you read a word.</p>
+  <div class="peoplerow">
+    <div class="pcol"><div class="av mine g1">M</div><div class="who">Maya</div><div class="cap">your kind of people</div></div>
+    <div class="pcol"><div class="av mine g4">L</div><div class="who">Leo</div><div class="cap">your kind of people</div></div>
+    <div class="pcol"><div class="av local g3">R</div><div class="who">Rin</div><div class="cap">local · shares your taste</div></div>
+    <div class="pcol"><div class="av local g2">D</div><div class="who">Dev</div><div class="cap">tastemaker nearby</div></div>
+  </div>
+</div></section>
+
+<!-- 07 BUTTONS -->
+<section><div class="wrap">
+  <div class="eyebrow"><b>07</b> The commit</div>
+  <h2>A button that's lit, not flat</h2>
+  <p class="lede">Testers disliked the old flat CTA. Same amber — different physics. The commit glows like it's giving off heat, so the one action that matters looks like the warmest thing on screen. The verb changes with the moment.</p>
+  <div class="btns">
+    <button class="btn btn-commit">count me in</button>
+    <button class="btn btn-commit">go</button>
+    <button class="btn btn-ghost">maybe later</button>
+  </div>
+  <div class="btnnote">Live → "join" · Recent → "count me in" · Memory → "shall we"</div>
+</div></section>
+
+<!-- 08 CARD -->
+<section><div class="wrap">
+  <div class="eyebrow"><b>08</b> The Drop card</div>
+  <h2>People and place in one unit</h2>
+  <p class="lede">The hero is a person's real, gritty first-person clip — not a catalog photo. Mode badge, who of your people is there, why it's for you, and the lit commit. Everything the system stands for, in one card.</p>
+  <div class="cardgrid">
+    <div class="dropcard">
+      <div class="hero-clip">
+        <div class="play"><i data-lucide="play"></i></div>
+        <span class="modebadge live"><span class="pulse"></span>Live</span>
+      </div>
+      <div class="body">
+        <div class="place">El Rio</div>
+        <div class="hood">Mission · back patio</div>
+        <div class="facepile">
+          <div class="mini g1">M</div><div class="mini g4">L</div><div class="mini g5">A</div>
+          <div class="who"><b>Maya</b> + 2 of your people are here</div>
+        </div>
+        <div class="whyline">"cheap margaritas, everyone's outside, it's exactly your kind of loose Thursday."</div>
+        <button class="btn btn-commit"><i data-lucide="navigation"></i> count me in</button>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 09 VOICE -->
+<section><div class="wrap">
+  <div class="eyebrow"><b>09</b> Voice</div>
+  <h2>Sincere in a room full of irony</h2>
+  <p class="lede">The newcomer angle earns DropIn the right to mean it. Warm, plain, a little tender. Empty states invite; they never apologize.</p>
+  <div class="voicegrid">
+    <div class="vcard"><div class="ctx">Welcome</div><div class="msg">welcome to the city. let's find <span class="lit">your people</span>.</div></div>
+    <div class="vcard"><div class="ctx">Live tonight</div><div class="msg">the Mission's warm tonight — 3 of your people are out.</div></div>
+    <div class="vcard"><div class="ctx">Empty / quiet night</div><div class="msg">quiet out there right now. want to be the one who starts something?</div></div>
+    <div class="vcard"><div class="ctx">After you commit</div><div class="msg">you're in. Maya knows you're coming.</div></div>
+  </div>
+</div></section>
+
+<!-- 10 DIFFERENTIATION -->
+<section><div class="wrap">
+  <div class="eyebrow"><b>10</b> Why it wins the room</div>
+  <h2>The one lane no one holds</h2>
+  <p class="lede">Plotted against the four apps in this market, the warm-nocturnal-earnest quadrant sits empty — and it's exactly where a newcomer lives.</p>
+  <div class="difftable">
+    <div class="diffrow"><div class="name">Corner<span>cool · airy · ironic</span></div><div class="vs">daytime blue chrome. DropIn is <b>dusk and glowing</b>.</div></div>
+    <div class="diffrow"><div class="name">Posh<span>editorial · aloof</span></div><div class="vs">high-fashion cold. DropIn is <b>warm and lived-in</b>.</div></div>
+    <div class="diffrow"><div class="name">Partiful<span>loud · maximal</span></div><div class="vs">a party flyer shouting. DropIn is <b>intimate and restrained</b>.</div></div>
+    <div class="diffrow"><div class="name">MigoMap<span>scrappy · zany</span></div><div class="vs">doodle energy. DropIn is <b>crafted and sincere</b>.</div></div>
+  </div>
+</div></section>
+
+<footer>DropIn — design system v1 · warm, nocturnal, human-lit · built to be felt in the first five minutes</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/lucide.min.js"></script>
+<script>
+  if (window.lucide && typeof lucide.createIcons === "function") { lucide.createIcons(); }
+</script>
+</body>
+</html>

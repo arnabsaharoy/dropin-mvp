@@ -771,6 +771,11 @@ body.light .mtoggle button.on{box-shadow:0 2px 8px rgba(0,0,0,.25)}
 .pin.live .tag{background:var(--flame);color:#7a2d0c}
 .pin .halo{position:absolute;top:0;left:50%;width:48px;height:48px;transform:translate(-50%,0);border-radius:50%;pointer-events:none}
 .pin.live .halo{animation:pulse 1.8s ease-out infinite;box-shadow:0 0 0 0 rgba(255,231,176,.5)}
+body.light .pin.live .disc{box-shadow:0 0 0 3px var(--flame),0 0 14px 3px rgba(240,163,46,.55)}
+body.light .pin.recent .disc{box-shadow:0 0 0 3px var(--ember),0 0 12px 2px rgba(219,83,27,.45)}
+body.light .pin.memory .disc{box-shadow:0 0 0 2px var(--coal);opacity:.92}
+body.light .pin.live .halo{animation-name:pulseLight}
+@keyframes pulseLight{0%{box-shadow:0 0 0 0 rgba(240,163,46,.5)}70%{box-shadow:0 0 0 22px rgba(240,163,46,0)}100%{box-shadow:0 0 0 0 rgba(240,163,46,0)}}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,231,176,.45)}70%{box-shadow:0 0 0 22px rgba(255,231,176,0)}100%{box-shadow:0 0 0 0 rgba(255,231,176,0)}}
 
 /* people-mode pin (bigger face, ring by closeness) */
@@ -901,6 +906,31 @@ body.light .mtoggle button.on{box-shadow:0 2px 8px rgba(0,0,0,.25)}
 .pp-ask{display:flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:var(--glow);
   background:rgba(255,169,77,.1);border:1px solid rgba(255,169,77,.3);padding:6px 12px;border-radius:100px;cursor:pointer}
 .pp-ask i{width:13px;height:13px}
+
+/* ---------- chat thread ---------- */
+.chatThread{position:absolute;inset:0;z-index:85;background:var(--night);display:flex;flex-direction:column;
+  transform:translateX(100%);transition:transform .3s cubic-bezier(.22,1,.36,1)}
+.chatThread.on{transform:translateX(0)}
+.chatTop{flex:none;display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid var(--hairline)}
+.chatBack{width:34px;height:34px;border-radius:50%;background:var(--night-2);border:1px solid var(--hairline);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none}
+.chatBack i{width:17px;height:17px;color:var(--warm-white)}
+.chatTop .av{width:36px;height:36px;border-radius:50%;background-size:cover;background-position:center;flex:none}
+.chatTop .nm{font-weight:700;font-size:14.5px;color:var(--warm-white)}
+.chatBody{flex:1;overflow-y:auto;padding:18px 20px;display:flex;flex-direction:column;gap:10px}
+.chatBubble{max-width:75%;padding:10px 14px;border-radius:16px;font-size:13.5px;line-height:1.4}
+.chatBubble.them{align-self:flex-start;background:var(--night-2);border:1px solid var(--hairline);color:var(--warm-white);
+  border-bottom-left-radius:4px}
+.chatBubble.me{align-self:flex-end;background:linear-gradient(180deg,#FFC078,var(--glow) 55%,#F0902F);color:var(--ink);
+  border-bottom-right-radius:4px;font-weight:600}
+.chatInputBar{flex:none;display:flex;gap:8px;align-items:center;padding:14px 20px calc(14px + env(safe-area-inset-bottom));
+  border-top:1px solid var(--hairline)}
+.chatInputBar input{flex:1;background:var(--night-2);border:1px solid var(--hairline);border-radius:100px;
+  padding:11px 16px;color:var(--warm-white);font-family:"Space Grotesk";font-size:13.5px;min-width:0}
+.chatInputBar input::placeholder{color:var(--warm-40)}
+.chatInputBar button{width:38px;height:38px;border-radius:50%;background:var(--glow);border:none;
+  display:flex;align-items:center;justify-content:center;flex:none;cursor:pointer}
+.chatInputBar button i{width:16px;height:16px;color:var(--ink)}
 .pp-dropstrip{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px;margin:0 -20px;padding-left:20px;padding-right:20px}
 .pp-drop{position:relative;flex:none;width:104px;height:144px;border-radius:14px;overflow:hidden;background-size:cover;background-position:center}
 .pp-drop::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.65),transparent 50%)}
@@ -1114,7 +1144,7 @@ body.light .mtoggle button.on{box-shadow:0 2px 8px rgba(0,0,0,.25)}
 .reelStage{position:relative;flex:1;overflow:hidden;background:#000}
 .reelSlide{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .2s ease}
 .reelSlide.on{opacity:1;pointer-events:auto}
-.reelSlide iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.reelSlide iframe{position:absolute;inset:0;width:100%;height:100%;border:0;pointer-events:none}
 .reelScrim{position:absolute;left:0;right:0;bottom:0;height:40%;z-index:2;pointer-events:none;
   background:linear-gradient(to top,rgba(0,0,0,.75),transparent)}
 .reelTopScrim{position:absolute;left:0;right:0;top:0;height:110px;z-index:2;pointer-events:none;
@@ -1251,6 +1281,14 @@ i svg{width:100%;height:100%;display:block;stroke-width:2}
   box-shadow:0 0 0 4px var(--night),0 0 0 7px var(--glow),0 0 46px 10px rgba(255,169,77,.5);animation:softPulse 2.6s ease-in-out infinite}
 @keyframes softPulse{0%,100%{box-shadow:0 0 0 4px var(--night),0 0 0 7px var(--glow),0 0 46px 10px rgba(255,169,77,.5)}
   50%{box-shadow:0 0 0 4px var(--night),0 0 0 7px var(--glow),0 0 60px 16px rgba(255,169,77,.7)}}
+.invScarcity{position:absolute;bottom:-4px;right:-4px;z-index:2;display:flex;align-items:center;gap:3px;
+  background:var(--glow);color:var(--ink);font-size:10.5px;font-weight:700;padding:4px 9px;border-radius:100px;
+  box-shadow:0 0 0 3px var(--night),0 2px 8px rgba(0,0,0,.4)}
+.invScarcity i{width:10px;height:10px}
+.invAvWrap{position:relative;display:inline-block}
+.invAltRow{margin-top:16px;display:flex;align-items:center;justify-content:center;gap:14px;font-size:12px;color:var(--warm-40)}
+.invAltRow button{background:none;border:none;color:var(--warm-40);font-size:12px;cursor:pointer;text-decoration:underline}
+.invAltRow .sep{color:var(--hairline)}
 .invpin{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--glow);background:var(--night-2);
   border:1px solid var(--hairline);padding:4px 11px;border-radius:100px;margin-bottom:16px}
 .invpin i{width:12px;height:12px}
@@ -1330,6 +1368,8 @@ i svg{width:100%;height:100%;display:block;stroke-width:2}
 .sdivider::before,.sdivider::after{content:"";flex:1;height:1px;background:var(--hairline)}
 .finep{font-family:"Permanent Marker";font-size:11.5px;color:var(--warm-40);text-align:center;margin-top:14px;
   transform:rotate(-1deg);line-height:1.5}
+.legalp{font-size:10.5px;color:var(--warm-40);text-align:center;margin-top:10px;line-height:1.5}
+.legalp a{color:var(--warm-60);text-decoration:underline}
 #iTaste{padding:20px 24px 26px;align-items:stretch;justify-content:flex-start;text-align:left}
 .tasteHead h1{font-family:"Archivo Black";font-size:27px;letter-spacing:-.01em;line-height:1.1}
 .tasteHead p{color:var(--warm-60);font-size:14px;margin-top:8px;line-height:1.5;max-width:34ch}
@@ -1410,13 +1450,12 @@ i svg{width:100%;height:100%;display:block;stroke-width:2}
     </div>
 
     <div class="iphase" id="iInvite">
-      <div class="invav" id="invAv"></div>
+      <div class="invAvWrap"><div class="invav" id="invAv"></div><div class="invScarcity"><i data-lucide="flame"></i>3 left</div></div>
       <div class="invpin"><i data-lucide="map-pin"></i> mission district, sf</div>
       <h1>maya's pulling you<br>into <span>her scene.</span></h1>
       <p class="sub">2 years in the mission, knows every warm spot. she picked you for the next drop.</p>
-      <div class="scarcity">invite #247 · maya's got 3 left this month</div>
       <button class="iBtn" id="acceptInvite">accept the invite</button>
-      <button class="iSkip" id="skipInvite">not maya? get your own invite →</button>
+      <div class="invAltRow"><button id="haveAccount">already have an account?</button><span class="sep">·</span><button id="requestAccess">request access</button></div>
     </div>
 
     <div class="iphase" id="iOnb1">
@@ -1455,7 +1494,7 @@ i svg{width:100%;height:100%;display:block;stroke-width:2}
       </div>
       <div class="onbCopy">
         <h1>find your<br><span>people</span> first.</h1>
-        <p>matched with locals and tastemakers who already live your kind of night — not an algorithm, an actual person.</p>
+        <p>matched with locals and tastemakers who already live your kind of scene — not an algorithm, an actual person.</p>
       </div>
       <div class="onbBottom">
         <div class="onbDots"><span></span><span class="on"></span><span></span></div>
@@ -1478,7 +1517,7 @@ i svg{width:100%;height:100%;display:block;stroke-width:2}
       </div>
       <div class="onbBottom">
         <div class="onbDots"><span></span><span></span><span class="on"></span></div>
-        <button class="iBtn" data-next="iSignin">let's find my people</button>
+        <button class="iBtn" data-next="iSignin">show me what's out there</button>
       </div>
     </div>
 
@@ -1505,12 +1544,13 @@ i svg{width:100%;height:100%;display:block;stroke-width:2}
         <i data-lucide="phone" style="width:17px;height:17px"></i>continue with phone number</button>
       <div class="phoneNote">just to find your people — never spammed, never posted.</div>
       <div class="finep">signing up means you're down for spontaneous plans, warm strangers, and the occasional 11pm "come thru"</div>
+      <div class="legalp">by continuing you agree to our <a href="#">terms</a> and <a href="#">privacy policy</a></div>
     </div>
 
     <div class="iphase" id="iTaste">
       <div class="tasteHead">
         <h1>what are you into</h1>
-        <p>pick your vibes and scenes — this is how we find your people.</p>
+        <p>pick your vibes and scenes — this is how we find your people and places.</p>
         <div class="tasteHint">tap a few, the more the better</div>
       </div>
       <div class="tasteGrid" id="tasteGrid">
@@ -1530,7 +1570,6 @@ i svg{width:100%;height:100%;display:block;stroke-width:2}
       <div class="tasteBottom">
         <div class="tasteCount" id="tasteCount">pick at least <b>3</b> to continue</div>
         <button class="iBtn dim" id="tasteCta">this is me</button>
-        <button class="tasteSkip" id="tasteSkip">skip for now</button>
       </div>
     </div>
   </div>
@@ -1561,7 +1600,7 @@ i svg{width:100%;height:100%;display:block;stroke-width:2}
           <button id="tPeople"><i data-lucide="users"></i>people</button>
         </div>
 
-        <div class="hint" id="mapHint"><b>7</b> spots warm in the Mission tonight</div>
+
       </div>
     </div>
 
@@ -1723,9 +1762,23 @@ i svg{width:100%;height:100%;display:block;stroke-width:2}
         </div>
       </div>
       <div class="pp-sectionhead"><span id="profGridHead"></span>
-        <button class="pp-ask" id="profAsk"><i data-lucide="help-circle"></i><span id="profAskTxt"></span></button>
+        <button class="pp-ask" id="profAsk"><i data-lucide="message-circle"></i><span id="profAskTxt"></span></button>
       </div>
       <div class="prof-grid" id="profGrid"></div>
+    </div>
+  </div>
+
+  <!-- chat thread -->
+  <div class="chatThread" id="chatThread">
+    <div class="chatTop">
+      <button class="chatBack" id="chatBack"><i data-lucide="arrow-left"></i></button>
+      <div class="av" id="chatAv"></div>
+      <div class="nm" id="chatNm"></div>
+    </div>
+    <div class="chatBody" id="chatBody"></div>
+    <div class="chatInputBar">
+      <input id="chatInput" placeholder="message...">
+      <button id="chatSend"><i data-lucide="send"></i></button>
     </div>
   </div>
 
@@ -1784,7 +1837,8 @@ function initIntro(){
   setTimeout(()=>go('iInvite'), 2600);
 
   document.getElementById('acceptInvite').addEventListener('click', ()=>go('iOnb1'));
-  document.getElementById('skipInvite').addEventListener('click', ()=>go('iSignin'));
+  document.getElementById('haveAccount').addEventListener('click', ()=>go('iSignin'));
+  document.getElementById('requestAccess').addEventListener('click', ()=>showToast("request sent \u2014 we'll let you know"));
 
   document.querySelectorAll('#introRoot [data-next]').forEach(b=>{
     b.addEventListener('click', ()=> go(b.dataset.next));
@@ -1822,7 +1876,7 @@ function initIntro(){
     });
   });
   cta.addEventListener('click', ()=>{ if(selected.size >= 3){ userTastes = Array.from(selected); reveal(); } });
-  document.getElementById('tasteSkip').addEventListener('click', reveal);
+  
 }
 
 function renderIcons(root){(root||document).querySelectorAll('[data-lucide]').forEach(el=>{const n=el.getAttribute('data-lucide'); if(_ICONS[n]){el.innerHTML=_ICONS[n]; el.removeAttribute('data-lucide');}});}
@@ -1911,7 +1965,7 @@ function catIcon(c){
 }
 function pinHTML(d){
   if(mapMode==="places"){
-    return `<div class="pin ${d.mode}"><div class="halo"></div>${d.mode==="live"?`<span class="tag">${d.tag}</span>`:""}<div class="disc" style="background-image:url('${img(d.slug)}')"><div class="cat"><i data-lucide="${catIcon(d.cat)}"></i></div></div><div class="stem"></div></div>`;
+    return `<div class="pin ${d.mode}"><div class="halo"></div><div class="disc" style="background-image:url('${img(d.slug)}')"><div class="cat"><i data-lucide="${catIcon(d.cat)}"></i></div></div><div class="stem"></div></div>`;
   }
   return `<div class="pin person ${d.cls}"><div class="disc" style="background-image:url('${img(d.slug)}')"></div><div class="stem"></div></div>`;
 }
@@ -1966,6 +2020,10 @@ document.getElementById("shJoin").addEventListener("click",function(e){
 });
 document.getElementById("shMiniDir").addEventListener("click",(e)=>{ e.stopPropagation(); showToast("opening directions…"); });
 document.getElementById("shMiniBring").addEventListener("click",(e)=>{ e.stopPropagation(); showToast("tag your people — coming soon"); });
+document.getElementById("shHero").addEventListener("click",(e)=>{
+  e.stopPropagation();
+  if(currentDrop){ closeSheet(); openReel(currentDrop, 0); }
+});
 document.getElementById("shBody").addEventListener("click",()=>{ if(currentDrop){ closeSheet(); openPlacePage(currentDrop); } });
 
 /* ----- place page ----- */
@@ -2042,7 +2100,7 @@ function renderComments(){
     </div>`).join("");
   renderIcons();
 }
-document.getElementById("ppBack").addEventListener("click", ()=> placePage.classList.remove("on"));
+document.getElementById("ppBack").addEventListener("click", (e)=> { e.stopPropagation(); closeReel(); closeChat(); placePage.classList.remove("on"); });
 
 document.getElementById("ppMeta").parentElement.addEventListener("click", ()=>{
   if(!currentPlace) return;
@@ -2177,8 +2235,10 @@ document.getElementById("ppDropStrip").addEventListener("click",(e)=>{
 
 /* ----- profile page ----- */
 const profilePage=document.getElementById("profilePage");
+let currentProfileSlug=null;
 function dropsByPerson(slug){ return DROPS.filter(d=>d.who.some(w=>w[0]===slug)); }
 function openProfile(slug){
+  currentProfileSlug = slug;
   const p = PEEPS.find(x=>x.slug===slug);
   if(!p) return;
   const av=document.getElementById("profAv");
@@ -2225,7 +2285,7 @@ function openProfile(slug){
   }
 
   document.getElementById("profGridHead").innerHTML = `${p.name}'s nights, unfiltered \u00b7 <b style="color:var(--glow)">${myDrops.length}</b>`;
-  document.getElementById("profAskTxt").textContent = "ask "+p.name;
+  document.getElementById("profAskTxt").textContent = "message "+p.name;
 
   const rotations=[-2,1,-1,2,-2,1];
   document.getElementById("profGrid").innerHTML = myDrops.map((d,i)=>`
@@ -2236,10 +2296,42 @@ function openProfile(slug){
   profilePage.classList.add("on");
   renderIcons();
 }
-document.getElementById("profBack").addEventListener("click", ()=> profilePage.classList.remove("on"));
+document.getElementById("profBack").addEventListener("click", ()=> { closeReel(); closeChat(); profilePage.classList.remove("on"); });
+
+/* ----- chat thread ----- */
+const chatThread = document.getElementById("chatThread");
+const CHAT_OPENERS = [
+  "hey! saw you're into {taste} too \u2014 you around this week?",
+  "yo, {taste} gang \ud83d\udc4b what's good tonight?",
+  "hii! your profile said {taste} and i had to say hi",
+];
+let chatPerson = null;
+function openChat(slug){
+  const p = PEEPS.find(x=>x.slug===slug);
+  if(!p) return;
+  chatPerson = p;
+  document.getElementById("chatAv").style.backgroundImage = `url('${img(p.slug)}')`;
+  document.getElementById("chatNm").textContent = p.name;
+  const taste = (p.tastes && p.tastes[0]) || "the scene";
+  const opener = CHAT_OPENERS[p.name.length % CHAT_OPENERS.length].replace("{taste}", taste);
+  document.getElementById("chatBody").innerHTML = `<div class="chatBubble them">${opener}</div>`;
+  chatThread.classList.add("on");
+}
+function closeChat(){ chatThread.classList.remove("on"); }
+function sendChat(){
+  const inp = document.getElementById("chatInput");
+  const val = inp.value.trim(); if(!val) return;
+  document.getElementById("chatBody").insertAdjacentHTML("beforeend", `<div class="chatBubble me">${val}</div>`);
+  inp.value = "";
+  const body = document.getElementById("chatBody");
+  body.scrollTop = body.scrollHeight;
+}
+document.getElementById("chatBack").addEventListener("click", closeChat);
+document.getElementById("chatSend").addEventListener("click", sendChat);
+document.getElementById("chatInput").addEventListener("keydown", e=>{ if(e.key==="Enter") sendChat(); });
+
 document.getElementById("profAsk").addEventListener("click", ()=>{
-  const nm = document.getElementById("profName").textContent;
-  showToast(`message sent to ${nm} \u2014 chat coming soon`);
+  if(currentProfileSlug) openChat(currentProfileSlug);
 });
 document.getElementById("profGrid").addEventListener("click", (e)=>{
   const tile = e.target.closest(".prof-tile[data-slug]");
@@ -2275,6 +2367,10 @@ document.getElementById("peopleList").addEventListener("click",(e)=>{
 
 /* ----- nav ----- */
 function show(id){
+  closeReel();
+  closeChat();
+  profilePage.classList.remove("on");
+  placePage.classList.remove("on");
   document.querySelectorAll(".screen").forEach(s=>s.classList.remove("on"));
   document.getElementById("s-"+id).classList.add("on");
   document.querySelectorAll(".nav button[data-go]").forEach(b=>b.classList.toggle("on", b.dataset.go===id));
@@ -2408,9 +2504,9 @@ renderMe();
 /* map places/people toggle */
 const tP=document.getElementById("tPlaces"), tU=document.getElementById("tPeople");
 tP.addEventListener("click",()=>{mapMode="places"; tP.classList.add("on"); tU.classList.remove("on");
-  document.getElementById("mapHint").innerHTML="<b>7</b> spots warm in the Mission tonight"; renderPins();});
+  renderPins();});
 tU.addEventListener("click",()=>{mapMode="people"; tU.classList.add("on"); tP.classList.remove("on");
-  document.getElementById("mapHint").innerHTML="<b>4</b> of your people are out right now"; renderPins();});
+  renderPins();});
 
 /* dark / light */
 const md=document.getElementById("mDark"), ml=document.getElementById("mLight");

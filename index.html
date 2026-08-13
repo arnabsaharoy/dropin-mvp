@@ -2167,6 +2167,7 @@ function reelSlideHTML(item, idx){
       <div class="reelWhy">"${item.why}"</div>
     </div>
     <div class="reelRail">
+      <button class="reelDir" data-idx="${idx}"><div class="ic"><i data-lucide="navigation"></i></div><span>directions</span></button>
       <button class="reelLike" data-idx="${idx}"><div class="ic"><i data-lucide="flame"></i></div><span>12</span></button>
       <button><div class="ic"><i data-lucide="message-circle"></i></div><span>reply</span></button>
       <button class="reelShare"><div class="ic"><i data-lucide="share-2"></i></div><span>share</span></button>
@@ -2209,6 +2210,12 @@ reelStage.addEventListener("touchend",(e)=>{
 }, {passive:true});
 
 reelStage.addEventListener("click",(e)=>{
+  if(e.target.closest(".reelDir")){
+    const btn = e.target.closest(".reelDir");
+    const item = reelData[parseInt(btn.dataset.idx,10)];
+    if(item) showToast(`opening directions to ${item.place}\u2026`);
+    return;
+  }
   if(e.target.closest(".reelLike")){
     const btn = e.target.closest(".reelLike"); btn.querySelector(".ic").classList.toggle("lit");
     const s = btn.querySelector("span"); s.textContent = btn.querySelector(".ic").classList.contains("lit") ? "13" : "12";
